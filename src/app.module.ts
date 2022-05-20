@@ -12,7 +12,7 @@ import { AbilityModule } from './ability/ability.module';
     host: 'localhost',
     port: 3306,
     username: 'root',
-    password: 'admin',
+    password: 'admin1234',
     database: 'cron_db',
     entities: [User],
     synchronize: true,   
