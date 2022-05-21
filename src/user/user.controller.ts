@@ -1,6 +1,6 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, Post, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, ForbiddenException, Get, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import { map, switchMap } from 'rxjs';
-import { AbilityFactory } from 'src/ability/ability.factory';
+import { AbilityFactory, ACTIONS } from 'src/ability/ability.factory';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGaurd } from 'src/auth/jwt-auth.gaurd';
 import { CreateUserDto, UserI, UserLoginDto } from './dtos/create-user.dto';
@@ -21,8 +21,13 @@ export class UserController {
             this.userService.findByEmail("adnan1@gmail.com").subscribe(((user: User) => resolve(user)))
         })
         const ability = this.abilityFactory.defineAbility(user);
-        
+        const isAllowed = ability.can(ACTIONS.CREATE, User);
+        if(!isAllowed) 
+        {
+            console.log("I am here")
+            throw new ForbiddenException("User is forbidden to perform this action")} else {
         return this.userService.create(body);
+        }
     }
    
     @Post('/login')
