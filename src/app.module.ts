@@ -16,7 +16,7 @@ import { Permission } from './permission/permission.entity';
     host: 'localhost',
     port: 3306,
     username: 'root',
-    password: 'admin',
+    password: 'admin1234',
     database: 'cron_db',
     entities: [User, Role, Permission],
     synchronize: true,   

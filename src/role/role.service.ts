@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository,  } from '@nestjs/typeorm';
 import { Permission, PermissionsList } from 'src/permission/permission.entity';
 import { In, QueryBuilder, Repository } from 'typeorm';
 import { Role } from './role.entity';
+import { UpdateRoleDto } from './dtos/update-role.dto';
+import { ResponseModel } from '../model/response.model';
 
 @Injectable()
 export class RolesService {
@@ -36,5 +38,32 @@ export class RolesService {
 
     public async findByRole (name: string) {
         return this.roleRepo.findOne({ where: { name }});
-    } 
+    }
+
+    public async update(id: number, roleDto: UpdateRoleDto):Promise<ResponseModel>{
+        const role = await this.roleRepo.findOne(id);
+        if(!role){
+            throw new NotFoundException('No data found for the provided id')
+        }
+        Object.assign(role, roleDto);
+        await this.roleRepo.save(role);
+        return {
+            success: true,
+            message: "Role updated successfully",
+            data: role
+        }
+
+    }
+
+    public async delete(id: number):Promise<ResponseModel>{
+        const role = await this.roleRepo.findOne(id);
+        if(!role){
+            throw new NotFoundException('No data found for the provided id')
+        }
+        await this.roleRepo.delete(id);
+        return {
+            success: true,
+            message: "Role deleted successfully"
+        }
+    }
 }

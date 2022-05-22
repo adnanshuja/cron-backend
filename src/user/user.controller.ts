@@ -9,7 +9,11 @@ import { UserService } from './user.service';
 @Controller('auth')
 export class UserController {
 
-    constructor(private readonly userService: UserService, private authService: AuthService, private abilityFactory: AbilityFactory){}
+    constructor(
+      private readonly userService: UserService,
+      private authService: AuthService,
+      private abilityFactory: AbilityFactory
+    ){}
 
 
     @UseInterceptors(ClassSerializerInterceptor)
