@@ -18,11 +18,11 @@ export class AbilityFactory {
     defineAbility(user: User){
         const { can, cannot, build } = new AbilityBuilder(Ability as AbilityClass<AppAbility>);
         
-        if(user.role === UserRole.ADMIN){
-            can(ACTIONS.MANAGE, 'all');
-        } else {
-            can(ACTIONS.READ, User);
-        }
+        // if(user.role === UserRole.ADMIN){
+        //     can(ACTIONS.MANAGE, 'all');
+        // } else {
+        //     can(ACTIONS.READ, User);
+        // }
         return build({ detectSubjectType: (item) => item.constructor as ExtractSubjectType<Subjects>})
     }
 }

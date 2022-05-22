@@ -1,4 +1,5 @@
-import { AfterInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Role } from "src/role/role.entity";
+import { AfterInsert, BeforeUpdate, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 export enum UserRole {
     ADMIN = "admin",
@@ -20,14 +21,10 @@ export class User {
     @Column()
     password: string;
 
-    @Column({
-        type: "simple-enum",
-        enum: UserRole,
-        default: UserRole.USER
-    })
-    role: UserRole;
 
-
+    @ManyToOne(() => Role, role => role.users)
+    role: Role
+    
     @AfterInsert()
     logInsert() {
         console.log("inserted user with id", this.id);
