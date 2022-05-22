@@ -105,6 +105,9 @@ export class UserService {
     async findAll(){
         const users = this.userRepo.find();
 
-        return users;
+        return (await users).map((user) => {
+            const {password, ...result} = user;
+            return result;
+        });
     }
 }
