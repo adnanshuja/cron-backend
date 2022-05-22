@@ -33,4 +33,8 @@ export class RolesService {
     public listAll () {
         return this.roleRepo.find({ relations: ['permissions']});
     }
+
+    public async findByRole (name: string) {
+        return this.roleRepo.findOne({ where: { name }});
+    } 
 }

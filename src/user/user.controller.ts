@@ -21,7 +21,7 @@ export class UserController {
         })
         const ability = this.abilityFactory.defineAbility(user);
         const isAllowed = ability.can(ACTIONS.CREATE, User);
-        if(!isAllowed) 
+        if(isAllowed) 
         {
             throw new ForbiddenException("User is forbidden to perform this action")} else {
         return this.userService.create(body);

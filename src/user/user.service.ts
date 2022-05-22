@@ -2,6 +2,8 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, map, Observable, switchMap } from 'rxjs';
 import { AuthService } from 'src/auth/auth.service';
+import { Role } from 'src/role/role.entity';
+import { RolesService } from 'src/role/role.service';
 import { Repository } from 'typeorm';
 import { CreateUserDto, UserLoginDto } from './dtos/create-user.dto';
 import { User } from './user.entity';
@@ -10,34 +12,49 @@ import { User } from './user.entity';
 export class UserService {
     constructor(
         @InjectRepository(User) private userRepo: Repository<User>, 
-        private authService: AuthService
+        private authService: AuthService,
+        private rolesService: RolesService
         ){}
 
     public create(payload: CreateUserDto){
-        const userEntity = this.userRepo.create(payload);
 
-    return this.mailExists(userEntity.email).pipe(
-      switchMap((exists: boolean) => {
-        if (!exists) {
-          return this.authService.hashPassword(userEntity.password).pipe(
-            switchMap((passwordHash: string) => {
-              // Overwrite the user password with the hash, to store it in the db
-              userEntity.password = passwordHash;
-              return from(this.userRepo.save(userEntity)).pipe(
-                map((savedUser: User) => {
-                  const { password, ...user } = savedUser;
-                  return user;
-                })
-              )
+        try {
+            const userEntity = this.userRepo.create(payload);
+            return this.mailExists(userEntity.email).pipe(
+            switchMap((exists: boolean) => {
+                if (!exists) {
+                return this.authService.hashPassword(userEntity.password).pipe(
+                    switchMap((passwordHash: string) => {
+                    // Overwrite the user password with the hash, to store it in the db
+                    userEntity.password = passwordHash;
+                    return this.getBasicRole().pipe(
+                        switchMap((role: Role) => {
+                            userEntity.role = role;
+                            return from(this.userRepo.save(userEntity)).pipe(
+                                map((savedUser: User) => {
+                                const { password, ...user } = savedUser;
+                                return user;
+                                })
+                            )
+                        })
+                    )
+                    })
+                )
+                } else {
+                throw new HttpException({ message: "email already in use "}, HttpStatus.CONFLICT);
+                }
             })
-          )
-        } else {
-          throw new HttpException('Email already in use', HttpStatus.CONFLICT);
+            ) 
+        } catch (error) {
+            throw new Error(error.message);
         }
-      })
-    )
+        
     }
-
+    private getBasicRole (): Observable<Role> {
+        return from(this.rolesService.findByRole('user')).pipe(
+            map((role) => role)
+        );
+    }
     private mailExists(email: string): Observable<boolean> {
         email = email.toLowerCase();
         return from(this.userRepo.findOne({ email })).pipe(
