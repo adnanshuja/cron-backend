@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, BeforeUpdate } from 'typeorm';
 import { Role } from 'src/role/role.entity';
 
 export enum PermissionsList {
