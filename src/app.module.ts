@@ -5,6 +5,10 @@ import {User} from './user/user.entity';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { AbilityModule } from './ability/ability.module';
+import { PermissionsModule } from './permission/permission.module';
+import { RolesModule } from './role/role.module';
+import { Role } from './role/role.entity';
+import { Permission } from './permission/permission.entity';
 
 @Module({
   imports: [ TypeOrmModule.forRoot({
@@ -12,11 +16,11 @@ import { AbilityModule } from './ability/ability.module';
     host: 'localhost',
     port: 3306,
     username: 'root',
-    password: 'admin1234',
+    password: 'admin',
     database: 'cron_db',
-    entities: [User],
+    entities: [User, Role, Permission],
     synchronize: true,   
-}), UserModule, AuthModule, AbilityModule],
+}), UserModule, AuthModule, AbilityModule, PermissionsModule, RolesModule],
   controllers: [],
   providers: [],
 })
