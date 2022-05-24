@@ -13,6 +13,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphqlCronModule } from './graphql-cron/graphql-cron.module';
+import { GraphqlCron } from './graphql-cron/entities/graphql-cron.entity';
 
 @Module({
   imports: [ TypeOrmModule.forRoot({
@@ -22,7 +23,7 @@ import { GraphqlCronModule } from './graphql-cron/graphql-cron.module';
     username: 'root',
     password: 'admin',
     database: 'cron_db',
-    entities: [User, Role, Permission],
+    entities: [User, Role, Permission, GraphqlCron],
     synchronize: true,   
 }), UserModule, AuthModule, AbilityModule, PermissionsModule, RolesModule, GraphQLModule.forRoot<ApolloDriverConfig>({
   autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
