@@ -5,14 +5,17 @@ export class Cron extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({
+        unique: true
+    })
     name: string;
 
     @Column()
-    status: boolean;
+    status: string;
 
     @Column({
-        name: 'cron_query'
+        name: 'cron_query',
+        unique: true
     })
     cronQuery: string;
 

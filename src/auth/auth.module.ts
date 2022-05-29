@@ -9,7 +9,7 @@ import { JwtAuthGaurd } from './jwt-auth.gaurd';
 @Module({
   imports: [JwtModule.register({
     secret: constants.jwtSecret,
-    signOptions: ({ expiresIn: '60s'})
+    signOptions: ({ expiresIn: '3000s'})
   }), forwardRef(() => UserModule)],
   providers: [AuthService, JwtStrategy, JwtAuthGaurd],
   exports: [AuthService]

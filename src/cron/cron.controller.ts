@@ -12,7 +12,7 @@ export class CronController {
     return this.cronService.createCronJob(createCronDto);
   }
 
-  @Get()
+  @Get('/list-all')
   findAll() {
     return this.cronService.findAll();
   }
