@@ -103,11 +103,19 @@ export class UserService {
     }
 
     async findAll(){
-        const users = this.userRepo.find({ relations: ['role']});
+        const users = this.userRepo.find({ relations: ['role', 'role.permissions']});
 
         return (await users).map((user) => {
+
             const {password, ...result} = user;
-            return result;
+            const finalResult = { name: '', email: '', role: '', permissions: [] };
+            finalResult.name = result.name;
+            finalResult.email = result.email;
+            finalResult.role = result.role.name;
+            for( const permission of result.role.permissions ){
+              finalResult.permissions.push(permission.name);
+            }
+            return finalResult;
         });
     }
 
