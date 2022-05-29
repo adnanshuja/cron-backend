@@ -6,4 +6,7 @@ export class CreateCronDto {
 
     @IsString()
     cronString: string;
+
+    @IsString()
+    cronQuery: string;
 }

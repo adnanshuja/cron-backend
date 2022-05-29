@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, BeforeUpdate, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, BeforeUpdate, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Permission } from 'src/permission/permission.entity';
 import { User } from 'src/user/user.entity';
 
@@ -11,6 +11,18 @@ export class Role {
 
     @Column()
     name: string;
+
+    @CreateDateColumn({
+        type: 'timestamp',
+        name: 'created_at'
+    })
+    createdAt: Date;
+
+    @UpdateDateColumn({
+        type: 'timestamp',
+        name: 'updated_at'
+    })
+    updatedAt: Date;
 
     @BeforeUpdate()
     roleToLowerCase(){

@@ -23,14 +23,12 @@ export class Cron extends BaseEntity {
 
     @CreateDateColumn({
         type: 'timestamp',
-        precision: 3,
         name: 'created_at'
     })
     createdAt: Date;
 
     @UpdateDateColumn({
         type: 'timestamp',
-        precision: 3,
         name: 'updated_at'
     })
     updatedAt: Date;

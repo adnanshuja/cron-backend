@@ -21,21 +21,17 @@ export class User extends BaseEntity {
     @Column()
     password: string;
 
-    // @CreateDateColumn({
-    //     type: 'timestamp',
-    //     precision: 3,
-    //     name: 'created_at',
-    //     nullable: false,
-    //     default: Date.now()
-    // })
-    // createdAt: Date;
+    @CreateDateColumn({
+        type: 'timestamp',
+        name: 'created_at',
+    })
+    createdAt: Date;
 
-    // @UpdateDateColumn({
-    //     type: 'timestamp',
-    //     precision: 3,
-    //     name: 'updated_at'
-    // })
-    // updatedAt: Date;
+    @UpdateDateColumn({
+        type: 'timestamp',
+        name: 'updated_at'
+    })
+    updatedAt: Date;
 
     @ManyToOne(() => Role, role => role.users, { cascade: false })
     role: Role

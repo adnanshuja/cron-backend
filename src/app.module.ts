@@ -16,6 +16,7 @@ import { GraphqlCronModule } from './graphql-cron/graphql-cron.module';
 import { GraphqlCron } from './graphql-cron/entities/graphql-cron.entity';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CronModule } from './cron/cron.module';
+import { Cron } from './cron/entities/cron.entity';
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: 'mysql',
@@ -24,7 +25,7 @@ import { CronModule } from './cron/cron.module';
     username: 'root',
     password: 'admin',
     database: 'cron_db',
-    entities: [User, Role, Permission, GraphqlCron],
+    entities: [User, Role, Permission, GraphqlCron, Cron],
     synchronize: true,
   }), UserModule, AuthModule, AbilityModule, PermissionsModule, RolesModule,
   GraphQLModule.forRoot<ApolloDriverConfig>({
