@@ -1184,3 +1184,37 @@ footer p {
   line-height: 31px;
   font-family: "Calibri-light";
 }
+
+
+.main-wrapp{
+  display: flex;
+  flex-wrap: nowrap;
+}
+.main-wrapp .sidebar-wrap {
+  max-width: 320px;
+  flex: 320px 1;
+  background: #e1e8f2;
+  padding: 30px;
+  height: calc(100vh - 60px);
+}
+.main-wrapp .content-wrap{
+  max-width: calc(100% - 320px);
+  flex: calc(100% - 320px);
+
+  padding: 30px;
+  background-color: #fff;
+}
+.list-links ul li {
+  display: block;
+  padding: 10px 15px;
+  font-size: 15px;
+  color: #000;
+  border-bottom: solid 1px #b7b7b7;
+}
+
+.list-links ul li a {
+  font-size: 19px;
+  color: #000;
+  font-family: 'Roboto';
+  font-weight: 400;
+}

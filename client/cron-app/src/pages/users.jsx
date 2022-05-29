@@ -19,7 +19,7 @@ function UsersPage() {
     return (
         <div>
             <section className="section-space">
-                <div className="container">
+                <div className="">
                     <div className="heading-title text-left">
                         <h2>Users List</h2>
                     </div>
