@@ -16,10 +16,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    // this.userService.getUserProfile
-    console.log("--->", payload.user);
     const user = await this.userService.getUserProfile(payload.user.email);
-    console.log(user.role);
-    return { ...payload.user };
+    const newPayload = { id: 0, name: '', email: '', role: '', permissions: []};
+    newPayload.name = payload.user.name;
+    newPayload.email = payload.user.email;
+    newPayload.role = user[0].role.name;
+    newPayload.permissions = user[0].role.permissions.map(permission => permission.name);
+    return { ...newPayload };
   }
 }

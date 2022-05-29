@@ -126,7 +126,7 @@ export class UserService {
     }
 
     async getUserProfile (email: string) {
-      const user = await this.userRepo.findOne({ where: { email }, relations: ['role.permissions', 'role']});
+      const user = await this.userRepo.find({ where: { email }, relations: ['role', 'role.permissions']});
       return user;
     }
 
