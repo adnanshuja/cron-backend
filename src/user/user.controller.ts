@@ -1,4 +1,4 @@
-import { Body, ClassSerializerInterceptor, Controller, ForbiddenException, Get, Post, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Delete, ForbiddenException, Get, Param, Post, Put, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AbilityFactory, ACTIONS } from 'src/ability/ability.factory';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGaurd } from 'src/auth/jwt-auth.gaurd';
@@ -31,15 +31,31 @@ export class UserController {
         return this.userService.create(body);
         }
     }
-   
+
+    @UseGuards(JwtAuthGaurd)
+    @Delete('/delete/:id')
+    deleteUser(@Param('id') id:number ){
+        console.log(id)
+        return this.userService.deleteUser(id);
+    }
+
     @Post('/login')
-    login(@Body() body: UserLoginDto){
-        return this.authService.generateJwt(body);
+    async login(@Body() body: UserLoginDto){
+        const token = await new Promise((resolve) => {
+            (this.userService.login(body)).subscribe((token) => resolve(token))
+        })
+        return { accessToken: token};
     }
 
     @UseGuards(JwtAuthGaurd)
     @Get('/get-all')
     getAllUsers(){
         return this.userService.findAll();
+    }
+
+    @UseGuards(JwtAuthGaurd)
+    @Put('/update-role')
+    updateUserRole(@Body() body){
+        return this.userService.updateUserRole(body.id, body.roleName);
     }
 }

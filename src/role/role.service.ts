@@ -5,7 +5,6 @@ import { In, QueryBuilder, Repository } from 'typeorm';
 import { Role } from './role.entity';
 import { UpdateRoleDto } from './dtos/update-role.dto';
 import { ResponseModel } from '../model/response.model';
-
 @Injectable()
 export class RolesService {
     constructor(
@@ -37,7 +36,7 @@ export class RolesService {
     }
 
     public async findByRole (name: string) {
-        return this.roleRepo.findOne({ where: { name }});
+        return this.roleRepo.findOne({ where: { name }, relations: ['permissions']});
     }
 
     public async update(id: number, roleDto: UpdateRoleDto):Promise<ResponseModel>{
@@ -55,6 +54,10 @@ export class RolesService {
 
     }
 
+    public async findById(id: number): Promise<Role>{
+        return this.roleRepo.findOne({ where: { id }});
+    }
+
     public async delete(id: number):Promise<ResponseModel>{
         const role = await this.roleRepo.findOne(id);
         if(!role){
@@ -65,5 +68,12 @@ export class RolesService {
             success: true,
             message: "Role deleted successfully"
         }
+    }
+
+    public async getPermissions(name: string): Promise<[]>{
+        const { id } = await this.findByRole(name);
+
+
+        return [];
     }
 }

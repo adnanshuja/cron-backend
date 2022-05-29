@@ -1,5 +1,5 @@
 import { Role } from "src/role/role.entity";
-import { AfterInsert, BaseEntity, BeforeUpdate, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { AfterInsert, BaseEntity, BeforeUpdate, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 export enum UserRole {
     ADMIN = "admin",
@@ -21,8 +21,23 @@ export class User extends BaseEntity {
     @Column()
     password: string;
 
+    // @CreateDateColumn({
+    //     type: 'timestamp',
+    //     precision: 3,
+    //     name: 'created_at',
+    //     nullable: false,
+    //     default: Date.now()
+    // })
+    // createdAt: Date;
 
-    @ManyToOne(() => Role, role => role.users)
+    // @UpdateDateColumn({
+    //     type: 'timestamp',
+    //     precision: 3,
+    //     name: 'updated_at'
+    // })
+    // updatedAt: Date;
+
+    @ManyToOne(() => Role, role => role.users, { cascade: false })
     role: Role
 
     @AfterInsert()

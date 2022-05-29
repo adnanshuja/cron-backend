@@ -1,7 +1,7 @@
-import { Controller, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import {User} from './user/user.entity';
+import { User } from './user/user.entity';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { AbilityModule } from './ability/ability.module';
@@ -14,23 +14,25 @@ import { join } from 'path';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphqlCronModule } from './graphql-cron/graphql-cron.module';
 import { GraphqlCron } from './graphql-cron/entities/graphql-cron.entity';
-
+import { ScheduleModule } from '@nestjs/schedule';
+import { CronModule } from './cron/cron.module';
 @Module({
-  imports: [ TypeOrmModule.forRoot({
+  imports: [TypeOrmModule.forRoot({
     type: 'mysql',
     host: 'localhost',
     port: 3306,
     username: 'root',
-    password: 'admin1234',
+    password: 'admin',
     database: 'cron_db',
     entities: [User, Role, Permission, GraphqlCron],
-    synchronize: true,   
-}), UserModule, AuthModule, AbilityModule, PermissionsModule, RolesModule, GraphQLModule.forRoot<ApolloDriverConfig>({
-  autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-  driver: ApolloDriver,
-  sortSchema: true
-}), GraphqlCronModule],
+    synchronize: true,
+  }), UserModule, AuthModule, AbilityModule, PermissionsModule, RolesModule,
+  GraphQLModule.forRoot<ApolloDriverConfig>({
+    autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+    driver: ApolloDriver,
+    sortSchema: true
+  }), GraphqlCronModule, ScheduleModule.forRoot(), CronModule],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }

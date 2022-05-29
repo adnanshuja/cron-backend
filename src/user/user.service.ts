@@ -79,12 +79,12 @@ export class UserService {
                         switchMap((user: User) => this.authService.generateJwt(user))
                       )
                     } else {
-                      throw new HttpException('Login was not Successfulll', HttpStatus.UNAUTHORIZED);
+                      throw new HttpException({message: 'Login was not Successfulll'}, HttpStatus.UNAUTHORIZED);
                     }
                   })
                 )
               } else {
-                throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+                throw new HttpException({message: 'User not found'}, HttpStatus.NOT_FOUND);
               }
             }
             )
@@ -103,11 +103,29 @@ export class UserService {
     }
 
     async findAll(){
-        const users = this.userRepo.find();
+        const users = this.userRepo.find({ relations: ['role']});
 
         return (await users).map((user) => {
             const {password, ...result} = user;
             return result;
         });
+    }
+
+    async deleteUser (id: number){
+      const response = await this.userRepo.delete({ id });
+      console.log(response);
+      return response;
+    }
+
+    async getUserProfile (email: string) {
+      const user = await this.userRepo.findOne({ where: { email }, relations: ['role.permissions', 'role']});
+      return user;
+    }
+
+    async updateUserRole(id: number, roleName: string){
+      const user = await this.userRepo.findOne({ where: { id }});
+      const role = await this.rolesService.findByRole(roleName);
+      user.role = role;
+      return await user.save();
     }
 }

@@ -14,7 +14,7 @@ export class GraphqlCron extends BaseEntity {
 
   @Field()
   @Column()
-  time: Date
+  message: string
 
   @Field(() => Boolean)
   @Column({ default: false })
@@ -22,7 +22,7 @@ export class GraphqlCron extends BaseEntity {
 
   @Field()
   @Column()
-  startFrom: Date;
+  cronLine: string;
 
 
 }
