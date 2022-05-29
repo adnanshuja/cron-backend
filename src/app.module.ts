@@ -23,7 +23,7 @@ import { Cron } from './cron/entities/cron.entity';
     host: 'localhost',
     port: 3306,
     username: 'root',
-    password: 'admin',
+    password: 'root',
     database: 'cron_db',
     entities: [User, Role, Permission, GraphqlCron, Cron],
     synchronize: true,
