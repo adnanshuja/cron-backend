@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { CronService } from './cron.service';
 import { CreateCronDto } from './dto/create-cron.dto';
-import { UpdateCronDto } from './dto/update-cron.dto';
 
 @Controller('cron')
 export class CronController {
@@ -17,17 +16,18 @@ export class CronController {
     return this.cronService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cronService.findOne(+id);
+  @Patch('/start-job/:id')
+  async startCronJob(@Param('id') id: string) {
+    return await this.cronService.startCronJob(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCronDto: UpdateCronDto) {
-    return this.cronService.update(+id, updateCronDto);
+  @Patch('/stop-job/:id')
+  async update(@Param('id') id: string) {
+    console.log('id', id)
+    return await this.cronService.stopCronJob(+id);
   }
 
-  @Delete(':id')
+  @Delete('delete/:id')
   remove(@Param('id') id: string) {
     return this.cronService.remove(+id);
   }

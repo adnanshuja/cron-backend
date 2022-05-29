@@ -1,9 +1,8 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
 import { Connection, getManager, Repository } from 'typeorm';
 import { CreateCronDto } from './dto/create-cron.dto';
-import { UpdateCronDto } from './dto/update-cron.dto';
 import { validate } from "mysql-query-validator";
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cron } from './entities/cron.entity';
@@ -51,18 +50,50 @@ export class CronService {
   }
 
   findAll() {
-    return this.cronRepository.findAndCount();
+    return this.cronRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cron`;
+  async startCronJob(id: number) {
+    try{
+      const foundCron = await this.cronRepository.findOne({ where: { id }});
+      if(foundCron){
+        if(!this.scheduleRegistry.doesExist("cron", foundCron.name)){
+          const job = new CronJob(foundCron.cronString, async () => {
+            this.logger.warn("running job ", foundCron.name);
+            const result = await getManager().query(foundCron.cronQuery);
+            console.log(result);
+          });
+          this.scheduleRegistry.addCronJob(foundCron.name, job);
+          job.start();
+        }
+        foundCron.status = "running";
+        return await foundCron.save();
+      }
+      throw new NotFoundException({ message: "Job Not found"});
+      } catch( error ){
+        throw new HttpException({message: "error", error: error.message}, HttpStatus.BAD_REQUEST);
+      }
   }
 
-  update(id: number, updateCronDto: UpdateCronDto) {
-    return `This action updates a #${id} cron`;
+  async stopCronJob(id: number) {
+    try{
+    const foundCron = await this.cronRepository.findOne({ where: { id }});
+    if(foundCron){
+      if(this.scheduleRegistry.doesExist("cron", foundCron.name)){
+        const job = this.scheduleRegistry.getCronJob(foundCron.name);
+        job.stop();
+        this.scheduleRegistry.deleteCronJob(foundCron.name);
+      }
+      foundCron.status = "stopped";
+      return await foundCron.save();
+    }
+    throw new NotFoundException({ message: "Job Not found"});
+    } catch( error ){
+      throw new HttpException({message: "error", error: error.message}, HttpStatus.BAD_REQUEST);
+    }
   }
 
   remove(id: number) {
-    return `This action removes a #${id} cron`;
+    return this.cronRepository.delete(id);
   }
 }
