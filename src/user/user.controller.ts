@@ -1,4 +1,4 @@
-import { Body, ClassSerializerInterceptor, Controller, Delete, ForbiddenException, Get, Param, Post, Put, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Delete, ForbiddenException, Get, Param, Post, Put, Request, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AbilityFactory, ACTIONS } from 'src/ability/ability.factory';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGaurd } from 'src/auth/jwt-auth.gaurd';
@@ -57,5 +57,12 @@ export class UserController {
     @Put('/update-role')
     updateUserRole(@Body() body){
         return this.userService.updateUserRole(body.id, body.roleName);
+    }
+
+    @UseGuards(JwtAuthGaurd)
+    @Get('/get-profile')
+    getUserProfile(@Request() req){
+        console.log(req.user, "-->");
+        return req.user;
     }
 }
