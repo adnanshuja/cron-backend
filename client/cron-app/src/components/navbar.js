@@ -22,7 +22,19 @@ function Navbar() {
                   <Link to={item.path}>
                     {item.icon}
                     <span>{item.title}</span>
+                   
                   </Link>
+                  <div className='submenu'>
+                    <Link to={item.path}>
+                    LInk Title
+                    </Link>
+                    <Link to={item.path}>
+                    LInk Title
+                    </Link>
+                    <Link to={item.path}>
+                    LInk Title
+                    </Link>
+                    </div>
                 </li>
               ) : null;
             })}
