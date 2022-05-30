@@ -1,13 +1,13 @@
 import Navbar from "../components/navbar";
 
-function CronPage() {
+function ReportsPage() {
     return (
         <div className="main-wrapp">
             <Navbar/>
             <div className="content-wrap">
             <section className="section-space">
                     <div className="heading-title text-left">
-                        <h2>Cron Jobs</h2>
+                        <h2>Reports Page</h2>
                     </div>
             </section>
             </div>
@@ -15,4 +15,4 @@ function CronPage() {
     );
 }
 
-export default CronPage;
+export default ReportsPage;

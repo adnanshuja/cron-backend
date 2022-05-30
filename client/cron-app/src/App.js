@@ -1,43 +1,28 @@
 import LoginPage from './pages/login';
-import UsersPage from './pages/users'
-// import { Route, Switch } from "react-router-dom";
-import { Route, Routes,  BrowserRouter as Router  } from 'react-router-dom';
+import UsersPage from './pages/users';
+import CronPage from './pages/cron';
+import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
-
+import ProtectedRoute from './components/protectedRoute';
+import BasicUser from './pages/basic-user';
+import HomePage from './pages/home';
+import ReportsPage from './pages/reports';
 function App() {
+  
+  
+  
   return (
     <main>
-      <div className=''>
-        <div className='main-wrapp'>
-          <div className='sidebar-wrap'>
-            <div className='list-links'>
-              <ul>
-                <li>
-                  <a href=''>Link 1</a>
-                </li>
-                <li>
-                  <a href=''>Link 1</a>
-                </li>
-                <li>
-                  <a href=''>Link 1</a>
-                </li>
-              </ul>
-              
-              </div>
-          </div>
-          <div className='content-wrap'>
-          <Router>
-        <Routes>
-        <Route path="/" element={<LoginPage />}></Route>
-        <Route path="/users" element={<UsersPage />}></Route>
-        {/* <Route path="/cron" component={<CronPage />}></Route> */}
-            {/* <Route component={Error} /> */}
-        </Routes>
-      </Router>
-          </div>
-        </div>
-      </div>
-      
+            <Router>
+              <Routes>
+                <Route path="/login" element={<LoginPage />}></Route>
+                <Route path="/users" element={<ProtectedRoute allowedRoles={['admin', 'sub-admin']} ><UsersPage /></ProtectedRoute>}></Route>
+                <Route path="/crons" element={<ProtectedRoute allowedRoles={['admin', 'manager', 'sub-admin', 'user']} ><CronPage /></ProtectedRoute>}></Route>
+                <Route path="/basic-user" element={<ProtectedRoute allowedRoles={['user']} ><BasicUser /></ProtectedRoute>}></Route>
+                <Route path="/home" element={<ProtectedRoute allowedRoles={['manager', 'sub-admin', 'user', 'admin']} ><HomePage /></ProtectedRoute>}></Route>
+                <Route path="/reports" element={<ProtectedRoute allowedRoles={['admin', 'manager']} ><ReportsPage /></ProtectedRoute>}></Route>
+              </Routes>
+            </Router>
     </main>
   );
 }

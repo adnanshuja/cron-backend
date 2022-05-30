@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import apiClient from '../helpers/apiClient'
 import dotsSvg from '../assest/images/dots.svg'
 import closedSvg from '../assest/images/close.svg'
-
+import Navbar from '../components/navbar.js';
+import ProtectedRoute from "../components/protectedRoute";
 
 function UsersPage() {
     const [users, setUsers] = useState([])
@@ -17,11 +18,12 @@ function UsersPage() {
         fetcUsers();
       }, []);
     return (
-        <div>
+        <div className="main-wrapp">
+            <Navbar/>
+            <div className="content-wrap">
             <section className="section-space">
-                <div className="">
                     <div className="heading-title text-left">
-                        <h2>Users List</h2>
+                        <h2>Users</h2>
                     </div>
                     <div className="table-wrapper">
                         <table className="responsive-table">
@@ -74,7 +76,6 @@ function UsersPage() {
                             </tbody>
                         </table>
                     </div>
-                </div>
             </section>
             <div className={"show-table-information mw-320 " + (isEditing ? 'show' : 'hidden')} id="userdetails">
                 <div className="table-info-header">
@@ -114,6 +115,7 @@ function UsersPage() {
                     <div className="text-center"><a className="theme-btn" href="javascript:void(0)"> Save </a></div>
                 </div>
                 </div>
+            </div>
             </div>
         </div>
     );

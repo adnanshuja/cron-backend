@@ -1190,12 +1190,14 @@ footer p {
   display: flex;
   flex-wrap: nowrap;
 }
-.main-wrapp .sidebar-wrap {
+.main-wrapp nav {
   max-width: 320px;
   flex: 320px 1;
-  background: #e1e8f2;
-  padding: 30px;
   height: calc(100vh - 60px);
+  background-color: #060b26;
+    display: flex;
+    justify-content: center;
+    transition: 850ms;
 }
 .main-wrapp .content-wrap{
   max-width: calc(100% - 320px);

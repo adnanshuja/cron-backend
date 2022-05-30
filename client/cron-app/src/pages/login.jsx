@@ -1,9 +1,11 @@
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import apiClient from '../helpers/apiClient'
 import { useNavigate  } from "react-router-dom";
+
 function LoginPage() {
-    const navigate = useNavigate ();
+
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -11,7 +13,9 @@ function LoginPage() {
     event.preventDefault();
    const {data} = await apiClient.post('auth/login', {email:email, password:password})
     localStorage.setItem('token', data.accessToken)
-    navigate("/users")
+    const currentUser = await apiClient.get('auth/get-profile');
+    localStorage.setItem('user', JSON.stringify(currentUser.data));
+    navigate("/home")
   }  
   return (
     <section className="">
@@ -24,7 +28,6 @@ function LoginPage() {
                     <div className="form-wrapper ">
                         <form onSubmit={handleSubmit}>
                             <div className="form-inner">
-                                <div className="validation-message error-found">Error Message</div>
                                 <div className="grid-row">
                                     <div className="grid-12">
                                         <div className="input-field">
@@ -48,12 +51,6 @@ function LoginPage() {
                                 <input type="submit" value="Login " className="theme-btn"/>
                             </div>
                         </form>
-                        <div className="other-links">
-                            <a href="javascript:void(0)" className="anchorunderline">Forgot your password?</a>
-                            <p>Don’t have an account?</p>
-                            <a href="javascript:void(0)" className="black-transparent-btn createaccount">Create an Account</a>
-                        </div>
-
                     </div>
                 </div>
 
