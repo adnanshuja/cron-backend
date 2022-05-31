@@ -24,17 +24,11 @@ function Navbar() {
                     <span>{item.title}</span>
                    
                   </Link>
-                  <div className='submenu'>
-                    <Link to={item.path}>
-                    LInk Title
+                  {item.title ==='Jobs' && user.role == 'admin' ? <div className='submenu'>
+                    <Link to={`${item.path}/create-cron`}>
+                    Create New Job
                     </Link>
-                    <Link to={item.path}>
-                    LInk Title
-                    </Link>
-                    <Link to={item.path}>
-                    LInk Title
-                    </Link>
-                    </div>
+                    </div> : null}
                 </li>
               ) : null;
             })}

@@ -1,5 +1,6 @@
 import { Ability, AbilityBuilder, AbilityClass, ExtractSubjectType, InferSubjects } from "@casl/ability";
 import { Injectable } from "@nestjs/common";
+import { Cron } from "src/cron/entities/cron.entity";
 import { Permission } from "src/permission/permission.entity";
 import { User, UserRole } from "src/user/user.entity";
 
@@ -11,7 +12,7 @@ export enum ACTIONS {
     DELETE = 'delete'
 }
 
-export type Subjects = InferSubjects<typeof User | typeof Permission | 'all'>;
+export type Subjects = InferSubjects<typeof User | typeof Cron | 'all'>;
 export type AppAbility = Ability<[ACTIONS, Subjects]>;
 
 @Injectable()

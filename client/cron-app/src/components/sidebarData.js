@@ -17,7 +17,7 @@ export const SidebarData = [
         allowedRoles: ['admin', 'sub-admin']
     },
     {
-        title: 'Cron Jobs',
+        title: 'Jobs',
         path: '/crons',
         icon: <IoIcons.IoIosPaper />,
         cName: 'nav-text',

@@ -65,6 +65,7 @@ export class CronService {
           });
           this.scheduleRegistry.addCronJob(foundCron.name, job);
           job.start();
+          this.logger.warn("job started with name ",  foundCron.name);
         }
         foundCron.status = "running";
         return await foundCron.save();
@@ -82,6 +83,7 @@ export class CronService {
       if(this.scheduleRegistry.doesExist("cron", foundCron.name)){
         const job = this.scheduleRegistry.getCronJob(foundCron.name);
         job.stop();
+        this.logger.warn('stopping job');
         this.scheduleRegistry.deleteCronJob(foundCron.name);
       }
       foundCron.status = "stopped";

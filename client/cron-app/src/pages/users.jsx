@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import apiClient from '../helpers/apiClient'
+import apiClient from '../helpers/apiClient';
 import dotsSvg from '../assest/images/dots.svg'
 import closedSvg from '../assest/images/close.svg'
 import Navbar from '../components/navbar.js';
-import ProtectedRoute from "../components/protectedRoute";
 
 function UsersPage() {
     const [users, setUsers] = useState([])
@@ -23,7 +22,7 @@ function UsersPage() {
             <div className="content-wrap">
             <section className="section-space">
                     <div className="heading-title text-left">
-                        <h2>Users</h2>
+                        <h2>Users [ visible only to admin ] </h2>
                     </div>
                     <div className="table-wrapper">
                         <table className="responsive-table">
@@ -52,23 +51,6 @@ function UsersPage() {
                                         <td className="responsive-table__body__text responsive-table__body__text--permission">
                                             {user.permissions.map((permission, i)=>{
                                                 return <span className="permmission-indicator permmission-indicator--create" key={i}>{permission}</span> })}
-                                        </td>
-                                        <td className="responsive-table__body__text responsive-table__body__text--actions">
-                                            <div className="drop-down">
-                                                <div className="selected">
-                                                    <a href="javascript:void(0)" onClick={()=>{setClicked(true)
-                                                    setSelectedIndex(index)}}>
-                                                        <img src={dotsSvg} className="img-fluid" alt=""/>
-                                                    </a>
-                                                </div>
-                                                <div className="options">
-                                                    <ul style={{display:clicked && selectedIndex == index?'block':'none'}}>
-                                                        <li><a href="javascript:void(0)" onClick={()=>{setisEditing(true)
-                                                    setSelectedIndex(index)}} className="open-sidebar">Edit</a></li>
-                                                        <li><a href="#">Delete</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
                                         </td>
                                 </tr>
                                 
